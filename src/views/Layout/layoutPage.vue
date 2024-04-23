@@ -5,9 +5,13 @@ const { y } = useScroll(window)
 </script>
 
 <template>
-  <LayoutHeader></LayoutHeader>
-  <LayoutHeader class="headerC" :class="{ show: y > 100 }"></LayoutHeader>
-  <RouterView></RouterView>
+  <LayoutHeader :key="$route.fullPath"></LayoutHeader>
+  <LayoutHeader
+    class="headerC"
+    :class="{ show: y > 100 }"
+    :key="$route.fullPath"
+  ></LayoutHeader>
+  <RouterView :key="$route.fullPath"></RouterView>
   <LayoutFooter></LayoutFooter>
 </template>
 

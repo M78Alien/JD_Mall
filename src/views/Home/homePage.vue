@@ -42,10 +42,12 @@ getHotGoodList()
     <div class="left">
       <ul>
         <li v-for="item in categoryList" :key="item.id" style="display: flex">
-          <RouterLink to="/">{{ item.name }}</RouterLink>
+          <RouterLink :to="`/category/${item.id}`" style="color: #c60000">{{
+            item.name
+          }}</RouterLink>
           <ul class="itemIn">
             <li v-for="i in item.children.slice(0, 2)" :key="i">
-              {{ i.name }}
+              <RouterLink :to="`/category/${item.id}`">{{ i.name }}</RouterLink>
             </li>
           </ul>
         </li>
@@ -113,7 +115,7 @@ ul {
 .left {
   background-color: #fff;
   width: 275px;
-  height: 490px;
+  height: 500px;
   margin-right: 10px;
   margin-top: 10px;
   border-radius: 10px;
@@ -121,7 +123,8 @@ ul {
     list-style-type: none;
     padding-left: 20px;
     li {
-      height: 54px;
+      height: 20px;
+      margin-bottom: 35px;
     }
     .itemIn {
       display: flex;
@@ -134,6 +137,7 @@ ul {
 .homeBanner {
   width: 1240px;
   height: 500px;
+  margin-top: 10px;
 
   img {
     width: 100%;

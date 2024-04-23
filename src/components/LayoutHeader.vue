@@ -1,7 +1,9 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { getCategoryService } from '@/api/goods.js'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const categoryList = ref([])
 const isUser = ref(true)
 const squareUrl = ref()
@@ -11,6 +13,7 @@ const getCategoryList = async () => {
   categoryList.value = res.result
 }
 onMounted(() => getCategoryList())
+const routeRef = ref(route.params.id)
 </script>
 
 <template>
@@ -18,18 +21,43 @@ onMounted(() => getCategoryList())
     <div class="headerCon">
       <div class="left">
         <div class="logo">
-          <el-image
-            src="src\assets\images\jdLogo.png"
-            style="height: 95px"
-          ></el-image>
+          <RouterLink to="/home">
+            <img
+              src="../assets/images/jdLogo.png"
+              alt=""
+              style="height: 95px"
+            />
+          </RouterLink>
         </div>
         <div class="cate">
           <ul>
-            <li><el-link :underline="false" type="default">首页</el-link></li>
+            <li>
+              <RouterLink to="/home">
+                <el-link :underline="false" type="default" v-if="routeRef">
+                  首页
+                </el-link>
+                <el-link
+                  :underline="false"
+                  type="default"
+                  v-else
+                  style="color: #e60000"
+                  >首页</el-link
+                >
+              </RouterLink>
+            </li>
             <li v-for="item in categoryList" :key="item.id">
-              <el-link :underline="false" type="default">{{
-                item.name
-              }}</el-link>
+              <RouterLink :to="`/category/${item.id}`">
+                <el-link
+                  :underline="false"
+                  type="default"
+                  v-if="routeRef === item.id"
+                  style="color: #e60000"
+                  >{{ item.name }}</el-link
+                >
+                <el-link :underline="false" type="default" v-else>{{
+                  item.name
+                }}</el-link>
+              </RouterLink>
             </li>
           </ul>
         </div>

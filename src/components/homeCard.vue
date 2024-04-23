@@ -2,7 +2,7 @@
 defineProps({
   title: {
     type: String,
-    default: '主页卡片'
+    default: ''
   },
   subTitle: {
     type: String,

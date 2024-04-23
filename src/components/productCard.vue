@@ -66,7 +66,7 @@ defineProps({
     body-style="padding: 0; width: 100%"
     v-else-if="cardType === 'cateCard'"
   >
-    <div>{{ item.name }} Mall</div>
+    <div>{{ item.name }} <span>Mall</span></div>
     <div>更多商品</div>
   </el-card>
 </template>
@@ -100,6 +100,10 @@ defineProps({
     font-size: 30px;
     font-weight: bold;
     color: #505050;
+
+    span {
+      color: #eb0000;
+    }
   }
 }
 </style>
