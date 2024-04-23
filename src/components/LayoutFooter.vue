@@ -14,6 +14,7 @@
   background-color: rgb(70, 70, 70);
   height: 200px;
   width: 100%;
+  margin-top: 30px;
   .slogan {
     color: white;
     font-size: 30px;

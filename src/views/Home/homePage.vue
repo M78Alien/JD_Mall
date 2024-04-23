@@ -18,6 +18,7 @@ const categoryList = ref([])
 const getCategoryList = async () => {
   const res = await getCategoryService()
   categoryList.value = res.result
+  // console.log(categoryList.value)
 }
 getCategoryList()
 
@@ -58,6 +59,7 @@ getHotGoodList()
       </el-carousel>
     </div>
   </div>
+
   <home-card title="新鲜好物" subTitle="好评商品 为您推荐">
     <ul class="ulcon">
       <li v-for="item in newGoodList" :key="item.id">
@@ -67,6 +69,7 @@ getHotGoodList()
       </li>
     </ul>
   </home-card>
+
   <home-card title="人气推荐" subTitle="人气爆款 不容错过">
     <ul class="ulcon">
       <li v-for="item in hotGoodList" :key="item.id">
@@ -75,6 +78,21 @@ getHotGoodList()
         </RouterLink>
       </li>
     </ul>
+  </home-card>
+
+  <home-card
+    v-for="item in categoryList.slice(0, 8)"
+    :key="item.id"
+    :title="item.name"
+  >
+    <div class="cateGoods">
+      <RouterLink to="/" v-for="i in item.goods" :key="i.id">
+        <product-card :item="i" cardType="proSmall"></product-card>
+      </RouterLink>
+      <RouterLink to="/">
+        <product-card :item="item" cardType="cateCard"></product-card>
+      </RouterLink>
+    </div>
   </home-card>
 </template>
 
@@ -88,6 +106,9 @@ getHotGoodList()
 a {
   text-decoration: none;
   color: #161616;
+}
+ul {
+  list-style-type: none;
 }
 .left {
   background-color: #fff;
@@ -128,5 +149,13 @@ a {
   li {
     margin-right: 14px;
   }
+}
+
+.cateGoods {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 17px;
 }
 </style>

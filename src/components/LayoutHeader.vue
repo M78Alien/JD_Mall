@@ -25,6 +25,7 @@ onMounted(() => getCategoryList())
         </div>
         <div class="cate">
           <ul>
+            <li><el-link :underline="false" type="default">首页</el-link></li>
             <li v-for="item in categoryList" :key="item.id">
               <el-link :underline="false" type="default">{{
                 item.name
