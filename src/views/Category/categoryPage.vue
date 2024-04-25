@@ -5,13 +5,15 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const cateData = ref({})
+
 const route = useRoute()
 const getRoute = async (id) => {
   const res = await getCateService(id)
   cateData.value = res.result
-  console.log(cateData.value)
+  // console.log(cateData.value)
 }
 const routeRef = ref(route.params.id)
+
 onMounted(() => getRoute(routeRef.value))
 </script>
 
@@ -51,12 +53,14 @@ onMounted(() => getRoute(routeRef.value))
   <div class="catePage" v-for="item in cateData.children" :key="item.id">
     <home-card :title="item.name">
       <div class="cateSec">
-        <product-card
+        <RouterLink
           v-for="i in item.goods"
           :key="i.id"
-          :item="i"
-          cardType="proSmall"
-        ></product-card>
+          :to="`/product/${i.id}`"
+          style="text-decoration: none"
+        >
+          <product-card :item="i" cardType="proSmall"></product-card>
+        </RouterLink>
       </div>
     </home-card>
   </div>

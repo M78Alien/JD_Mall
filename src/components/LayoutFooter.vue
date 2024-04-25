@@ -5,7 +5,7 @@
       <div style="color: #ff0000">京东</div>
       商城
     </div>
-    <div class="copyright">CopyRight™️京东商城 | Made by Alien</div>
+    <div class="copyright">CopyRight 京东商城 | Made by Alien</div>
   </div>
 </template>
 

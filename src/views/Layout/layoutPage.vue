@@ -1,5 +1,6 @@
 <script setup>
 import { useScroll } from '@vueuse/core'
+import { Pointer } from '@element-plus/icons-vue'
 
 const { y } = useScroll(window)
 </script>
@@ -12,6 +13,11 @@ const { y } = useScroll(window)
     :key="$route.fullPath"
   ></LayoutHeader>
   <RouterView :key="$route.fullPath"></RouterView>
+  <el-backtop :right="30" :bottom="100">
+    <div style="height: auto; width: 100%; color: #c60000; text-align: center">
+      <el-icon><Pointer /></el-icon>
+    </div>
+  </el-backtop>
   <LayoutFooter></LayoutFooter>
 </template>
 

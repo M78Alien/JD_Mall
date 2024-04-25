@@ -10,3 +10,6 @@ export const getHotService = () => request({ url: '/home/hot' })
 
 export const getCateService = (id) =>
   request({ url: '/category', params: { id } })
+
+export const getGoodsService = (id) =>
+  request({ url: '/goods', params: { id } })

@@ -65,7 +65,7 @@ getHotGoodList()
   <home-card title="新鲜好物" subTitle="好评商品 为您推荐">
     <ul class="ulcon">
       <li v-for="item in newGoodList" :key="item.id">
-        <RouterLink to="/">
+        <RouterLink :to="`/product/${item.id}`">
           <product-card :item="item" cardType="proLarge"></product-card>
         </RouterLink>
       </li>
@@ -88,10 +88,10 @@ getHotGoodList()
     :title="item.name"
   >
     <div class="cateGoods">
-      <RouterLink to="/" v-for="i in item.goods" :key="i.id">
+      <RouterLink :to="`/product/${i.id}`" v-for="i in item.goods" :key="i.id">
         <product-card :item="i" cardType="proSmall"></product-card>
       </RouterLink>
-      <RouterLink to="/">
+      <RouterLink :to="`/category/${item.id}`">
         <product-card :item="item" cardType="cateCard"></product-card>
       </RouterLink>
     </div>
