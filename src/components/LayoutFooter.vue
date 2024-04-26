@@ -5,7 +5,17 @@
       <div style="color: #ff0000">京东</div>
       商城
     </div>
-    <div class="copyright">CopyRight 京东商城 | Made by Alien</div>
+    <div class="copyright">
+      CopyRight 京东商城 | Made by
+      <el-link
+        type="primary"
+        :underline="false"
+        href="https://m78alien.github.io/"
+        target="_blank"
+      >
+        Alien
+      </el-link>
+    </div>
   </div>
 </template>
 

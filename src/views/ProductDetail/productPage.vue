@@ -4,6 +4,7 @@ import { getGoodsService } from '@/api/goods.js'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMouseInElement } from '@vueuse/core'
+import XtxSku from '@/components/XtxSku/index.vue'
 
 const goodDetail = ref({})
 const route = useRoute()
@@ -37,6 +38,14 @@ watch([elementX, elementY, isOutside], () => {
   positionX.value = -left.value * 2
   positionY.value = -top.value * 2
 })
+
+const disCountMsg = () => {
+  // eslint-disable-next-line no-undef
+  ElMessage({
+    type: 'success',
+    message: '降价通知设置成功，当商品降价会提醒你哦'
+  })
+}
 </script>
 
 <template>
@@ -111,10 +120,71 @@ watch([elementX, elementY, isOutside], () => {
         >
           {{ goodDetail.name }}
         </div>
+
         <div style="font-size: 12px; color: #737373; line-height: 250%">
           {{ goodDetail.desc }}
         </div>
-        <div>123</div>
+
+        <div class="sellCard">
+          <span
+            style="
+              color: #cc0000;
+              font-size: 30px;
+              height: 100%;
+              font-weight: bold;
+            "
+            >￥{{ goodDetail.price }}
+          </span>
+          <span
+            style="
+              color: #737373;
+              text-decoration: line-through;
+              margin-left: 15px;
+            "
+            v-show="goodDetail.price !== goodDetail.oldPrice"
+            >￥{{ goodDetail.oldPrice }}
+          </span>
+          <el-link
+            type="primary"
+            :underline="false"
+            style="margin-left: 15px; margin-bottom: 5px"
+            @click="disCountMsg"
+            >降价通知
+          </el-link>
+        </div>
+
+        <div class="miniCard">
+          <div class="miniCardSec">
+            <div>商品销量</div>
+            <div>{{ goodDetail.salesCount }}</div>
+          </div>
+          <div class="miniCardSec">
+            <div>评论总数</div>
+            <div>{{ goodDetail.commentCount }}</div>
+          </div>
+          <div class="miniCardSec">
+            <div>收藏总数</div>
+            <div>{{ goodDetail.collectCount }}</div>
+          </div>
+          <div class="miniCardSec" style="width: 25%">
+            <div>品牌名称</div>
+            <div>{{ goodDetail.brand?.name }}</div>
+          </div>
+          <div style="width: 15%; margin: auto">
+            <img
+              :src="goodDetail.brand?.picture"
+              alt=""
+              style="
+                width: 60%;
+                height: 60%;
+                margin-left: 10%;
+                border-radius: 5px;
+              "
+            />
+          </div>
+        </div>
+
+        <XtxSku :goods="goodDetail"></XtxSku>
       </div>
     </div>
   </div>
@@ -146,11 +216,45 @@ watch([elementX, elementY, isOutside], () => {
     position: absolute;
     background-repeat: no-repeat;
     background-size: 200%;
+    z-index: 1;
   }
 
   .proSell {
     width: 65%;
     margin-top: 19px;
+
+    .sellCard {
+      margin-top: 10px;
+      width: 85%;
+      height: 40px;
+    }
+
+    .miniCard {
+      width: 70%;
+      height: 90px;
+      display: flex;
+      background-color: rgb(242, 242, 242, 0.7);
+      margin-top: 15px;
+      justify-content: space-between;
+      border-radius: 7px;
+
+      .miniCardSec {
+        width: 20%;
+        margin: auto;
+        text-align: center;
+
+        div:first-child {
+          font-weight: bold;
+        }
+        div:last-child {
+          padding-top: 10px;
+        }
+      }
+
+      .miniCardSec + .miniCardSec {
+        border-left: 1px solid #ccc;
+      }
+    }
   }
 
   .picList {

@@ -4,7 +4,7 @@ const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net'
 // 创建 axios 实例，设置基础地址和超时时间
 const http = axios.create({
   baseURL,
-  timeout: 10000
+  timeout: 200000
 })
 
 // axios 请求拦截器
