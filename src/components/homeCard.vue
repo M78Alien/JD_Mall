@@ -7,13 +7,16 @@ defineProps({
   subTitle: {
     type: String,
     default: ''
+  },
+  cardWidth: {
+    default: 1525
   }
 })
 </script>
 
 <template>
-  <div style="width: 1525px; margin: auto; padding-top: 5px">
-    <div class="hot">
+  <div :style="{ width: `${cardWidth}px`, margin: 'auto', paddingTop: '5px' }">
+    <div class="hot" :style="{ width: `${cardWidth}px` }">
       <span class="titleText">{{ title }}</span>
       <span class="subText">{{ subTitle }}</span>
     </div>

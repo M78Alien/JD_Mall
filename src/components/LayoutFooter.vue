@@ -21,7 +21,7 @@
 
 <style scoped lang="scss">
 .footerCon {
-  background-color: rgb(70, 70, 70);
+  background-color: rgb(70, 70, 70, 0.9);
   height: 200px;
   width: 100%;
   margin-top: 30px;

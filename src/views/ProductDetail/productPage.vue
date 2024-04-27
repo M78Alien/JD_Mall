@@ -1,5 +1,5 @@
 <script setup>
-import { ArrowRight } from '@element-plus/icons-vue'
+import { ArrowRight, ShoppingCart } from '@element-plus/icons-vue'
 import { getGoodsService } from '@/api/goods.js'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -11,8 +11,9 @@ const route = useRoute()
 const getGoodDetail = async () => {
   const res = await getGoodsService(route.params.id)
   goodDetail.value = res.result
-  console.log(goodDetail.value)
+  // console.log(goodDetail.value)
 }
+
 onMounted(() => getGoodDetail())
 
 const imgRef = ref(0)
@@ -35,6 +36,18 @@ watch([elementX, elementY, isOutside], () => {
   if (elementY.value > size && elementY.value < size * 3) {
     top.value = elementY.value - size
   }
+  if (elementX.value > size * 3) {
+    left.value = size * 2
+  }
+  if (elementX.value < size) {
+    left.value = 0
+  }
+  if (elementY.value > size * 3) {
+    top.value = size * 2
+  }
+  if (elementY.value < size) {
+    top.value = 0
+  }
   positionX.value = -left.value * 2
   positionY.value = -top.value * 2
 })
@@ -45,6 +58,10 @@ const disCountMsg = () => {
     type: 'success',
     message: '降价通知设置成功，当商品降价会提醒你哦'
   })
+}
+
+const skuChange = (sku) => {
+  console.log(sku)
 }
 </script>
 
@@ -168,11 +185,26 @@ const disCountMsg = () => {
           </div>
           <div class="miniCardSec" style="width: 25%">
             <div>品牌名称</div>
-            <div>{{ goodDetail.brand?.name }}</div>
+            <div v-if="goodDetail.brand !== null">
+              {{ goodDetail.brand?.name }}
+            </div>
+            <div v-else>未知</div>
           </div>
           <div style="width: 15%; margin: auto">
             <img
+              v-if="goodDetail.brand !== null"
               :src="goodDetail.brand?.picture"
+              alt=""
+              style="
+                width: 60%;
+                height: 60%;
+                margin-left: 10%;
+                border-radius: 5px;
+              "
+            />
+            <img
+              v-else
+              src="../../assets/images/jdminiLogo.png"
               alt=""
               style="
                 width: 60%;
@@ -184,13 +216,86 @@ const disCountMsg = () => {
           </div>
         </div>
 
-        <XtxSku :goods="goodDetail"></XtxSku>
+        <XtxSku :goods="goodDetail" @change="skuChange"></XtxSku>
+
+        <el-button
+          size="large"
+          color="#ff0000"
+          plain
+          :icon="ShoppingCart"
+          style="margin-top: 20px"
+        >
+          加入购物车
+        </el-button>
       </div>
     </div>
+  </div>
+
+  <el-tabs
+    style="
+      width: 1250px;
+      margin: 20px auto 0;
+      border-radius: 10px;
+      border: none;
+    "
+    type="border-card"
+  >
+    <el-tab-pane label="同类商品" class="list">
+      <RouterLink
+        :to="`/product/${i.id}`"
+        v-for="i in goodDetail.similarProducts"
+        :key="i.id"
+      >
+        <product-card :item="i" cardType="proSmall"></product-card>
+      </RouterLink>
+    </el-tab-pane>
+    <el-tab-pane label="热销商品" class="list">
+      <RouterLink
+        :to="`/product/${i.id}`"
+        v-for="i in goodDetail.hotByDay"
+        :key="i.id"
+      >
+        <product-card :item="i" cardType="proSmall"></product-card>
+      </RouterLink>
+    </el-tab-pane>
+  </el-tabs>
+
+  <div>
+    <home-card
+      :title="'商品详情'"
+      :cardWidth="1250"
+      style="
+        width: 1250px;
+        background-color: white;
+        margin-top: 20px;
+        border-radius: 10px;
+      "
+    >
+      <div
+        style="
+          width: 1000px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        "
+      >
+        <img
+          v-for="item in goodDetail.details?.pictures"
+          :key="item.index"
+          :src="item"
+          alt=""
+          style="width: 100%"
+        />
+      </div>
+    </home-card>
   </div>
 </template>
 
 <style scoped lang="scss">
+a {
+  text-decoration: none;
+}
 .productSell {
   width: 1250px;
   margin: 0 auto;
@@ -248,6 +353,7 @@ const disCountMsg = () => {
         }
         div:last-child {
           padding-top: 10px;
+          color: #737373;
         }
       }
 
@@ -268,5 +374,13 @@ const disCountMsg = () => {
       border: 2px solid #ff0000;
     }
   }
+}
+
+.list {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 17px;
 }
 </style>

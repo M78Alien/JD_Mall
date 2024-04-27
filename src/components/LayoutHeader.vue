@@ -2,11 +2,12 @@
 import { onMounted, ref } from 'vue'
 import { getCategoryService } from '@/api/goods.js'
 import { useRoute } from 'vue-router'
+import { useUserStore } from '@/stores'
+import { User } from '@element-plus/icons-vue'
 
 const route = useRoute()
+const useStore = useUserStore()
 const categoryList = ref([])
-const isUser = ref(true)
-const squareUrl = ref()
 const getCategoryList = async () => {
   const res = await getCategoryService()
   // console.log(res.result)
@@ -14,6 +15,12 @@ const getCategoryList = async () => {
 }
 onMounted(() => getCategoryList())
 const routeRef = ref(route.params.id)
+
+const turnOff = () => {
+  useStore.clearUser()
+  // eslint-disable-next-line no-undef
+  ElMessage({ type: 'success', message: '账号成功退出' })
+}
 </script>
 
 <template>
@@ -62,19 +69,28 @@ const routeRef = ref(route.params.id)
           </ul>
         </div>
       </div>
-      <div class="user" v-if="isUser">
-        <el-link :underline="false" type="info">Alien</el-link>
+      <div class="user" v-if="useStore.userInfo.token">
+        <el-link :underline="false" type="info">
+          <el-icon><User /></el-icon> {{ useStore.userInfo.nickname }}
+        </el-link>
         <el-link :underline="false" type="info">购物车</el-link>
         <el-link :underline="false" type="info">我的订单</el-link>
-        <el-link :underline="false" type="info">退出登录</el-link>
-        <el-avatar shape="square" :size="40" :src="squareUrl" />
+        <el-link :underline="false" type="info" @click="turnOff">
+          退出登录
+        </el-link>
+        <el-avatar :size="40" :src="useStore.userInfo.avatar" />
       </div>
-      <div class="user" v-else>请登录</div>
+      <div class="user" v-else>
+        <routerLink to="/login" style="color: #737373">请登录</routerLink>
+      </div>
     </div>
   </nav>
 </template>
 
 <style scoped lang="scss">
+a {
+  text-decoration: none;
+}
 nav {
   border-bottom: 1px solid #b8b8b8;
 }

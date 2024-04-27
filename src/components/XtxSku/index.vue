@@ -191,11 +191,11 @@ export default {
     dd {
       flex: 1;
       color: #666;
+      margin-left: 10px;
 
       > img {
         width: 50px;
         height: 50px;
-        margin-bottom: 4px;
         @include sku-state-mixin;
       }
 
@@ -204,7 +204,6 @@ export default {
         height: 30px;
         line-height: 28px;
         padding: 0 20px;
-        margin-bottom: 4px;
         @include sku-state-mixin;
       }
     }
