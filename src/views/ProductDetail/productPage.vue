@@ -5,16 +5,26 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMouseInElement } from '@vueuse/core'
 import XtxSku from '@/components/XtxSku/index.vue'
+import { ElMessage } from 'element-plus'
+import { useCartStore } from '@/stores'
 
+const useCart = useCartStore()
 const goodDetail = ref({})
 const route = useRoute()
+const inventory = ref(0)
 const getGoodDetail = async () => {
   const res = await getGoodsService(route.params.id)
   goodDetail.value = res.result
-  // console.log(goodDetail.value)
+  inventory.value =
+    goodDetail.value?.inventory > 9999 ? '1w+' : goodDetail.value.inventory
 }
 
 onMounted(() => getGoodDetail())
+
+window.scrollTo({
+  top: 200,
+  behavior: 'smooth'
+})
 
 const imgRef = ref(0)
 const imgEnter = (i) => {
@@ -60,8 +70,30 @@ const disCountMsg = () => {
   })
 }
 
+const count = ref(1)
+const skuObj = ref({})
 const skuChange = (sku) => {
-  console.log(sku)
+  // console.log(sku)
+  skuObj.value = sku
+}
+const addCard = () => {
+  if (skuObj.value.skuId) {
+    // console.log(skuObj.value.skuId)
+    useCart.addCart({
+      id: goodDetail.value.id,
+      name: goodDetail.value.name,
+      picture: goodDetail.value.mainPictures[0],
+      price: goodDetail.value.price,
+      count: count.value,
+      skuId: skuObj.value.skuId,
+      selected: true
+    })
+    useCart.getPrice()
+    useCart.getCart()
+    ElMessage.success('加入购物车成功')
+  } else {
+    ElMessage.warning('请选择规格')
+  }
 }
 </script>
 
@@ -180,8 +212,8 @@ const skuChange = (sku) => {
             <div>{{ goodDetail.commentCount }}</div>
           </div>
           <div class="miniCardSec">
-            <div>收藏总数</div>
-            <div>{{ goodDetail.collectCount }}</div>
+            <div>库存总数</div>
+            <div>{{ inventory }}</div>
           </div>
           <div class="miniCardSec" style="width: 25%">
             <div>品牌名称</div>
@@ -218,15 +250,22 @@ const skuChange = (sku) => {
 
         <XtxSku :goods="goodDetail" @change="skuChange"></XtxSku>
 
-        <el-button
-          size="large"
-          color="#ff0000"
-          plain
-          :icon="ShoppingCart"
-          style="margin-top: 20px"
-        >
-          加入购物车
-        </el-button>
+        <div style="margin-top: 20px">
+          <el-input-number
+            v-model="count"
+            :min="1"
+            style="height: 40px; margin-right: 30px"
+          />
+          <el-button
+            size="large"
+            color="#ff0000"
+            plain
+            :icon="ShoppingCart"
+            @click="addCard"
+          >
+            加入购物车
+          </el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -278,6 +317,7 @@ const skuChange = (sku) => {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          margin-bottom: 40px;
         "
       >
         <img
@@ -321,7 +361,7 @@ a {
     position: absolute;
     background-repeat: no-repeat;
     background-size: 200%;
-    z-index: 1;
+    z-index: 999;
   }
 
   .proSell {

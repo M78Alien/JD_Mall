@@ -3,14 +3,9 @@ import { ref } from 'vue'
 import { useUserStore } from '@/stores'
 import { useRouter } from 'vue-router'
 
-const loginType = ref(true)
 const dialogVisible = ref(false)
 const useStore = useUserStore()
 const router = useRouter()
-
-const changeType = () => {
-  loginType.value = !loginType.value
-}
 
 const formModel = ref({
   userid: '',
@@ -49,6 +44,13 @@ const onLogin = () => {
 const handleEnter = () => {
   onLogin()
 }
+
+const loginTest = async () => {
+  await useStore.getUserInfo(13012345680, 123456)
+  // eslint-disable-next-line no-undef
+  ElMessage({ type: 'success', message: '登录成功' })
+  router.replace({ path: '/home' })
+}
 </script>
 
 <template>
@@ -83,7 +85,6 @@ const handleEnter = () => {
               border-radius: 10px;
               background-color: rgb(242, 242, 242, 0.9);
             "
-            v-if="loginType"
           >
             <template #header>
               <div class="card-header">
@@ -131,35 +132,8 @@ const handleEnter = () => {
               </el-form-item>
             </el-form>
             <template #footer>
-              <el-link type="primary" :underline="false" @click="changeType">
-                使用手机验证码登录
-              </el-link>
-            </template>
-          </el-card>
-
-          <el-card
-            style="
-              max-width: 450px;
-              margin-top: 120px;
-              margin: 120px auto;
-              border-radius: 10px;
-              background-color: rgb(242, 242, 242, 0.9);
-            "
-            v-else
-          >
-            <template #header>
-              <div class="card-header">
-                <span style="font-weight: bold; font-size: larger">
-                  验证码登录
-                </span>
-              </div>
-            </template>
-            <p v-for="o in 4" :key="o" class="text item">
-              {{ 'List item ' + o }}
-            </p>
-            <template #footer>
-              <el-link type="primary" :underline="false" @click="changeType">
-                使用账号密码登录
+              <el-link type="primary" :underline="false" @click="loginTest">
+                使用测试账号登录
               </el-link>
             </template>
           </el-card>
