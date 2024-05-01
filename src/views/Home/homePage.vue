@@ -75,7 +75,7 @@ getHotGoodList()
   <home-card title="人气推荐" subTitle="人气爆款 不容错过">
     <ul class="ulcon">
       <li v-for="item in hotGoodList" :key="item.id">
-        <RouterLink to="/">
+        <RouterLink to="/home">
           <product-card :item="item" cardType="hot"></product-card>
         </RouterLink>
       </li>

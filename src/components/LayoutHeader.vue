@@ -94,9 +94,6 @@ const openCard = (item) => {
         >
           购物车
         </el-link>
-        <el-link :underline="false" type="info" @click="openCard('form')"
-          >我的订单</el-link
-        >
         <el-link :underline="false" type="info" @click="turnOff">
           退出登录
         </el-link>
@@ -119,10 +116,6 @@ const openCard = (item) => {
       <shopping-card
         :cardType="cardType"
         v-if="cardType === 'cart'"
-      ></shopping-card>
-      <shopping-card
-        :cardType="cardType"
-        v-if="cardType === 'form'"
       ></shopping-card>
       <shopping-card
         :cardType="cardType"

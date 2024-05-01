@@ -6,20 +6,20 @@
       商城
     </div>
     <div class="copyright">
-      CopyRight 京东商城 | Made by
-      <el-link
-        type="primary"
-        :underline="false"
-        href="https://m78alien.github.io/"
-        target="_blank"
+      CopyRight
+      <a href="https://github.com/M78Alien/JD_Mall" style="color: #cc0000"
+        >京东商城</a
       >
-        Alien
-      </el-link>
+      | Made by
+      <a href="https://m78alien.github.io/" style="color: #4d94ff">Alien</a>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+a {
+  text-decoration: none;
+}
 .footerCon {
   background-color: rgb(70, 70, 70, 0.9);
   height: 200px;
